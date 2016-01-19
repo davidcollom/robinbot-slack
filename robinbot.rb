@@ -39,14 +39,15 @@ class RobinBot < SlackRubyBot::Bot
     list = doc.scan(/(?<key>.*)=>(?<quote>.*)/)
     key,quote = list.find{|k,q| q.include? m[:term] }
     logger.info "Key = '#{key}' {#{key.inspect}}"
+    out = ''
     if key.nil?
-      c.say(text: "Sorry, Could not find quote containing \"#{m[:term]}\"", channel: d.channel)
+      out = "Sorry, Could not find quote containing \"#{m[:term]}\""
     else
       logger.info  "getting quote 'http://robinbot.co.uk/#{key.strip}'"
       quote = open("http://robinbot.co.uk/#{key.strip}",&:read)
-      c.say(text: "```#{quote}```", channel: d.channel)
+      out = "```#{quote}```"
     end
-    nil
+    c.say(text: out, channel: d.channel)
   end
 
 end
