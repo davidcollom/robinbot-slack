@@ -34,16 +34,18 @@ class RobinBot < SlackRubyBot::Bot
   end
   
   match(/robinbot (?<term>.*)/) do |c,d,m|
+    out = ''
     logger.info "getting list: 'http://robinbot.co.uk/list'"
     doc = open('http://robinbot.co.uk/list',&:read)
     list = doc.scan(/(?<key>.*)=>(?<quote>.*)/)
     logger.info "Looking for records containing: '#{m[:term]}'"
-    key,quote = list.find{|k,q| q.downcase.include? m[:term].downcase }
-    logger.info "Key = '#{key}' {#{key.inspect}}"
-    out = ''
-    if key.nil?
+    keys = list.select{|k,q| q.downcase.include? m[:term].downcase }
+    logger.info "Found: #{keys.size} items.."
+    if keys.size == 0
       out = "Sorry, Could not find quote containing \"#{m[:term]}\""
     else
+      key = keys.sample[0]
+      logger.info "Key = '#{key}' {#{key.inspect}}"
       logger.info  "getting quote 'http://robinbot.co.uk/#{key.strip}'"
       quote = open("http://robinbot.co.uk/#{key.strip}",&:read)
       out = "```#{quote}```"
