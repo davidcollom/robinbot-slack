@@ -34,7 +34,7 @@ class RobinBot < SlackRubyBot::Bot
   end
   
   match(/robinbot (?<term>.*)/) do |c,d,m|
-    logger.info "getting quote: 'http://robinbot.co.uk/list'"
+    logger.info "getting list: 'http://robinbot.co.uk/list'"
     doc = open('http://robinbot.co.uk/list',&:read)
     list = doc.scan(/(?<key>.*)=>(?<quote>.*)/)
     key,quote = list.find{|k,q| q.include? m[:term] }
@@ -46,6 +46,7 @@ class RobinBot < SlackRubyBot::Bot
       quote = open("http://robinbot.co.uk/#{key.strip}",&:read)
       c.say(text: "```#{quote}```", channel: d.channel)
     end
+    nil
   end
 
 end
