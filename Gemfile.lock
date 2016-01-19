@@ -33,6 +33,10 @@ GEM
       addressable (~> 2.3)
     minitest (5.8.3)
     multipart-post (2.0.0)
+    newrelic-slack-ruby-bot (0.1.0)
+      newrelic_rpm
+      slack-ruby-bot
+    newrelic_rpm (3.14.1.311)
     oj (2.14.3)
     slack-ruby-bot (0.6.0)
       activesupport
@@ -57,7 +61,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  newrelic-slack-ruby-bot
   slack-ruby-bot
 
 BUNDLED WITH
-   1.10.6
+   1.11.2
