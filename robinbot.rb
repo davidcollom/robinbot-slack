@@ -8,6 +8,7 @@ end
 
 class RobinBot < SlackRubyBot::Bot
   match 'robinbot' do |c, d, m|
+    logger.info "getting: 'http://robinbot.co.uk'"
     doc = open('http://robinbot.co.uk',&:read)
     c.say(text: "```#{doc}```", channel: d.channel)
   end
@@ -19,12 +20,14 @@ class RobinBot < SlackRubyBot::Bot
   end
 
   command 'list' do |c, d, m|
+    logger.info "getting: 'http://robinbot.co.uk/list'"
     doc = open('http://robinbot.co.uk/list',&:read)
     list = doc.scan(/(?<key>.*)=>(?<quote>.*)/)
     c.say(text: list.map{|k,v| "#{k.strip}: #{v.strip}"}, channel: d.channel)
   end
 
   command 'count' do |c, d, m|
+    logger.info "getting: 'http://robinbot.co.uk/list'"
     doc = open('http://robinbot.co.uk/list',&:read)
     list = doc.scan(/(?<key>.*)=>(?<quote>.*)/)
     c.say(text: "I have #{list.size} quotes in my DB", channel: d.channel)
