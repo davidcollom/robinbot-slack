@@ -37,8 +37,8 @@ class RobinBot < SlackRubyBot::Bot
     if key.nil?
       c.say(text: "Sorry, Could not find quote containing \"#{m[:term]}\"", channel: d.channel)
     else
-      puts "getting quote: http://robinbot.co.uk/#{key}"
-      quote = open("http://robinbot.co.uk/#{key}",&:read)
+      puts "getting quote: http://robinbot.co.uk/#{key.strip}"
+      quote = open("http://robinbot.co.uk/#{key.strip}",&:read)
       c.say(text: "```#{quote}```", channel: d.channel)
     end
   end
