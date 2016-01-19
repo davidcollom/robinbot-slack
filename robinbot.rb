@@ -7,26 +7,38 @@ SlackRubyBot.configure do |config|
 end
 
 class RobinBot < SlackRubyBot::Bot
-  match 'robinbot' do |client, data, match|
+  match 'robinbot' do |c, d, m|
     doc = open('http://robinbot.co.uk',&:read)
-    client.say(text: "```#{doc}```", channel: data.channel)
+    c.say(text: "```#{doc}```", channel: d.channel)
   end
 
-  match(/robinbot (?<key>([a-z-A-Z0-9]+(\-?)))/) do |client, data, match|
-    doc = open("http://robinbot.co.uk/#{match[:key]}",&:read)
-    client.say(text: "```#{doc}```", channel: data.channel)
+  match(/robinbot (?<key>([a-z-A-Z0-9]+(\-?)))/) do |c, d, m|
+    doc = open("http://robinbot.co.uk/#{m[:key]}",&:read)
+    c.say(text: "```#{doc}```", channel: d.channel)
   end
 
-  command 'list' do |client, data, match|
+  command 'list' do |c, d, m|
     doc = open('http://robinbot.co.uk/list',&:read)
     list = doc.scan(/(?<key>.*)=>(?<quote>.*)/)
-    client.say(text: list.map{|k,v| "#{k.strip}: #{v.strip}"}, channel: data.channel)
+    c.say(text: list.map{|k,v| "#{k.strip}: #{v.strip}"}, channel: d.channel)
   end
 
-  command 'count' do |client, data, match|
+  command 'count' do |c, d, m|
     doc = open('http://robinbot.co.uk/list',&:read)
     list = doc.scan(/(?<key>.*)=>(?<quote>.*)/)
-    client.say(text: "I have #{list.size} quotes in my DB", channel: data.channel)
+    c.say(text: "I have #{list.size} quotes in my DB", channel: d.channel)
+  end
+  
+  match(/robinbot (?<term>.*)/) do |c,d,m|
+    doc = open('http://robinbot.co.uk/list',&:read)
+    list = doc.scan(/(?<key>.*)=>(?<quote>.*)/)
+    key,quote = list.find{|k,q| q.include? m[:term] }
+    if key.nil?
+      c.say(text: "Sorry, Could not find quote containing \"#{m[:term]}\"", channel: d.channel)
+    else
+      quote = open("http://robinbot.co.uk/#{key}",&:read)
+      c.say(text: "```#{quote}```", channel: d.channel)
+    end
   end
 
 end
