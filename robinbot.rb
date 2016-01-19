@@ -37,6 +37,7 @@ class RobinBot < SlackRubyBot::Bot
     logger.info "getting list: 'http://robinbot.co.uk/list'"
     doc = open('http://robinbot.co.uk/list',&:read)
     list = doc.scan(/(?<key>.*)=>(?<quote>.*)/)
+    logger.info "Looking for records containing: '#{m[:term]}'"
     key,quote = list.find{|k,q| q.include? m[:term] }
     logger.info "Key = '#{key}' {#{key.inspect}}"
     out = ''
