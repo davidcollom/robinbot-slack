@@ -12,7 +12,7 @@ class RobinBot < SlackRubyBot::Bot
     c.say(text: "```#{doc}```", channel: d.channel)
   end
 
-  match(/robinbot (?<key>([a-z-A-Z0-9]+(\-?)))/) do |c, d, m|
+  match(/robinbot (?<key>([a-zA-Z0-9]+(\-?)))/) do |c, d, m|
     doc = open("http://robinbot.co.uk/#{m[:key]}",&:read)
     c.say(text: "```#{doc}```", channel: d.channel)
   end
