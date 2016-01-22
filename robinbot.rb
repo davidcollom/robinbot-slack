@@ -13,7 +13,7 @@ class RobinBot < SlackRubyBot::Bot
     c.say(text: "```#{doc}```", channel: d.channel)
   end
 
-  match(/robinbot(:?) (?<key>[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)+)/) do |c, d, m|
+  match(/^robinbot(:?) (?<key>[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)+)/) do |c, d, m|
     logger.info "getting: 'http://robinbot.co.uk/#{m[:key]}'"
     doc = open("http://robinbot.co.uk/#{m[:key]}",&:read)
     c.say(text: "```#{doc}```", channel: d.channel)
@@ -33,7 +33,7 @@ class RobinBot < SlackRubyBot::Bot
     c.say(text: "I have #{list.size} quotes in my DB", channel: d.channel)
   end
   
-  match(/robinbot(:?) (?<term>.*)/) do |c,d,m|
+  match(/^robinbot(:?) (?<term>.*)/) do |c,d,m|
     out = ''
     logger.info "getting list: 'http://robinbot.co.uk/list'"
     doc = open('http://robinbot.co.uk/list',&:read)
