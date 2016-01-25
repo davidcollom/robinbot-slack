@@ -39,7 +39,7 @@ class RobinBot < SlackRubyBot::Bot
     doc = open('http://robinbot.co.uk/list',&:read)
     list = doc.scan(/(?<key>.*)=>(?<quote>.*)/)
     logger.info "Looking for records containing: '#{m[:term]}'"
-    keys = list.select{|k,q| q.downcase.include? m[:term].downcase }
+    keys = list.select{|k,q| q.downcase.include?(m[:term].downcase) || k.downcase.include?(m[:term].downcase) }
     logger.info "Found: #{keys.size} items.."
     if keys.size == 0
       out = "Sorry, Could not find quote containing \"#{m[:term]}\""
