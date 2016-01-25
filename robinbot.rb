@@ -23,7 +23,8 @@ class RobinBot < SlackRubyBot::Bot
     logger.info "getting: 'http://robinbot.co.uk/list'"
     doc = open('http://robinbot.co.uk/list',&:read)
     list = doc.scan(/(?<key>.*)=>(?<quote>.*)/)
-    c.say(text: '```'+list.map{|k,v| "#{k.strip}: #{v.strip}"}+'```', channel: d.channel)
+    out = list.map{|k,v| "#{k.strip}: #{v.strip}"}.join("\n")
+    c.say(text: "```#{out}```", channel: d.channel)
   end
 
   command 'count' do |c, d, m|
